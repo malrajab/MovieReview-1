@@ -56,7 +56,6 @@ public class DetailsFragmentLand extends Fragment {
     private static final int LOADER_ID = 42;
     private final String SELECTED_ITEM_KEY="movie_key";
     private  String blackposterKey, movieTitle;
-    private ListView mLV_Review;
     private ToggleButton toggleButton;
     private TextView mTV_Details;
     private TextView mTV_Title;
@@ -65,7 +64,6 @@ public class DetailsFragmentLand extends Fragment {
     private ViewPager viewPager;
     private LinearLayout mTlrCntnr;
     private LinearLayout mRvwCntnr;
-    private Button rvwGlimpse;
     private SharedPreferences sharedPref;
     private int _id, favSize;
     private int layout_id=-1;
@@ -84,12 +82,12 @@ public class DetailsFragmentLand extends Fragment {
         urlPosterApi=getActivity().getString(R.string.poster_base_url)+"/w500";
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this.getContext());
         editor = sharedPref.edit();
-      Bundle arguments = getArguments();
-        if (arguments!=null&&arguments.containsKey(ARG_KEY)) {
+        Bundle arguments = getArguments();
+        if (arguments!=null&&arguments.containsKey(ARG_KEY))
             _id = arguments.getInt(ARG_KEY);
-            favSize=arguments.getInt(ARG_COUNT);
-            Log.v("Cursor ..>", ""+ ARG_KEY +" "+_id +" ... "+ARG_COUNT);
-        }
+
+        if (arguments!=null&&arguments.containsKey(ARG_COUNT))
+            favSize=arguments.getInt(ARG_COUNT); else favSize=-1;
     }
 
     @Override
@@ -98,7 +96,6 @@ public class DetailsFragmentLand extends Fragment {
         View view= inflater.inflate(R.layout.fragment_details_land, container, false);
 
         // creating handles to this fragment views.
-        mLV_Review   = (ListView)       view.findViewById(R.id.details_review_list);
         toggleButton = (ToggleButton)   view.findViewById(R.id.details_icon_favorite);
         mTV_Details  = (TextView)       view.findViewById(R.id.details_overview);
         mTV_Date     = (TextView)       view.findViewById(R.id.details_date);
@@ -106,7 +103,6 @@ public class DetailsFragmentLand extends Fragment {
         ratingBar    = (RatingBar)      view.findViewById(R.id.movie_ratingbar);
         mTlrCntnr    = (LinearLayout)   view.findViewById(R.id.trailer_container);
         mRvwCntnr    = (LinearLayout)   view.findViewById(R.id.review_container);
-        rvwGlimpse   = (Button)         view.findViewById(R.id.review_hint);
         blockbuster  = (ImageView)      view.findViewById(R.id.backdrop_container);
 
         //Obtain from ContentProvider the details of this movie in detailsCursor
@@ -173,16 +169,16 @@ public class DetailsFragmentLand extends Fragment {
     }
 
     private void pupolateMovieDetails(Cursor detailsCursor, View view){
-
         if(detailsCursor.moveToFirst()) {
-
             mTV_Details.setText(detailsCursor.getString(RefVal.MI_COL_OVERVIEW));
             mTV_Date.setText(detailsCursor.getString(RefVal.MI_COL_RELEASE));
             ratingBar.setRating(detailsCursor.getFloat(RefVal.MI_COL_RATING) / 2.0f);
-            //mTV_Title.setText(detailsCursor.getString(RefVal.MI_COL_TITL));
+            mTV_Title.setText(detailsCursor.getString(RefVal.MI_COL_TITL));
+            Log.v("Cursor ..>", ""+_id +" ... "+ARG_COUNT);
+            _id=detailsCursor.getInt(RefVal.MI_COL_ID);
+            Log.v("Cursor ..>", ""+_id +" ... "+ARG_COUNT);
             Picasso.with(getContext()).load(urlPosterApi+ detailsCursor.getString(RefVal.MI_COL_BACKDROPPATH))
                     .into(blockbuster);
-
             if (sharedPref.getBoolean(String.valueOf("FAV_" + _id), false)) {
                 toggleButton.setChecked(true);
                 toggleButton.setBackgroundColor(Color.GREEN);
@@ -235,7 +231,6 @@ public class DetailsFragmentLand extends Fragment {
                 mRvwCntnr.addView(reviewContent);i++;
             }while(cursor.moveToNext());
         }
-
     }
     private void pupolateMovieTrailers(Cursor cursor, View view){
         if( cursor.moveToFirst()){

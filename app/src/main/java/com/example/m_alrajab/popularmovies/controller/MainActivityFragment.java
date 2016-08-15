@@ -1,6 +1,5 @@
 package com.example.m_alrajab.popularmovies.controller;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -25,7 +24,6 @@ import com.example.m_alrajab.popularmovies.R;
 import com.example.m_alrajab.popularmovies.controller.sync.MoviesSyncAdapter;
 import com.example.m_alrajab.popularmovies.model_data.RecycleViewAdapter;
 import com.example.m_alrajab.popularmovies.model_data.data.PopMovieContract;
-import com.example.m_alrajab.popularmovies.ux.SettingsActivity;
 
 import static com.example.m_alrajab.popularmovies.controller.Utility.getImageHeight;
 import static com.example.m_alrajab.popularmovies.controller.Utility.getImageWidth;
@@ -54,6 +52,7 @@ public class MainActivityFragment extends Fragment implements SwipeRefreshLayout
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState); //setRetainInstance(false);
         prefs = PreferenceManager.getDefaultSharedPreferences(this.getContext());
+
         prefs.registerOnSharedPreferenceChangeListener(this);
         prefUrlBuilder =new PrefUrlBuilder(getActivity());
         setStethoWatch(getActivity());
@@ -92,7 +91,8 @@ public class MainActivityFragment extends Fragment implements SwipeRefreshLayout
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu,inflater);
-        inflater.inflate(R.menu.popular_movies_menu, menu);
+        if(!menu.getItem(0).getTitle().equals(getContext().getString(R.string.refreshString)))
+            inflater.inflate(R.menu.popular_movies_menu, menu);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -100,9 +100,7 @@ public class MainActivityFragment extends Fragment implements SwipeRefreshLayout
         if (id == R.id.action_refresh) {
             updateMovieList();
             return true;
-        }else if (id == R.id.action_settings){
-            startActivity(new Intent(getActivity(),SettingsActivity.class));
-        }
+        }else
         return super.onOptionsItemSelected(item);
     }
 
@@ -157,6 +155,5 @@ public class MainActivityFragment extends Fragment implements SwipeRefreshLayout
     public void onLoaderReset(Loader<Cursor> loader) {
         adapter.swapCursor(null);
     }
-
-
+    
 }

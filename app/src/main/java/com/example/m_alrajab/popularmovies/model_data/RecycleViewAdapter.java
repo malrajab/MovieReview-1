@@ -111,7 +111,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<MyViewHolder>  {
                         intent.putExtra(SELECTED_ITEM_KEY, favIDs.get(tmpPosition));
                         intent.putExtra("urlPosterApi", prefUrlBuilder.getPosterApiBaseURL());
                         if(Utility.getLayoutCol(v.getContext())==3)
-                            reattachNewFragment(v,prefUrlBuilder.getPosterApiBaseURL(),movies.get(tmpPosition).getId(),favIDs.size() );
+                            reattachNewFragment(v,favIDs.get(tmpPosition),favIDs.size() );
                         else
                             v.getContext().startActivity(intent);
                     }
@@ -132,7 +132,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<MyViewHolder>  {
                         intent.putExtra(SELECTED_ITEM_KEY, movies.get(tmpPosition).getId());
                         intent.putExtra("urlPosterApi", prefUrlBuilder.getPosterApiBaseURL());
                         if(Utility.getLayoutCol(v.getContext())==3)
-                            reattachNewFragment(v,prefUrlBuilder.getPosterApiBaseURL(),movies.get(tmpPosition).getId(),3 );
+                            reattachNewFragment(v,movies.get(tmpPosition).getId(),-1 );
                         else
                          v.getContext().startActivity(intent);
                     }
@@ -153,12 +153,11 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<MyViewHolder>  {
     }
 
 
-    private void reattachNewFragment(View view,String urlPosterApi, int key, int itmCount){
+    private void reattachNewFragment(View view, int key, int itmCount){
         DetailsFragmentLand newFragment = new DetailsFragmentLand();
         Bundle args = new Bundle();
         args.putInt(DetailsFragmentLand.ARG_COUNT, itmCount);
         args.putInt(DetailsFragmentLand.ARG_KEY, key);
-        args.putString(DetailsFragmentLand.ARG_URL, urlPosterApi);
         newFragment.setArguments(args);
         FragmentTransaction transaction = getActivity(view)
                 .getSupportFragmentManager().beginTransaction();
