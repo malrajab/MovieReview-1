@@ -2,6 +2,7 @@ package com.example.m_alrajab.popularmovies.ux;
 
 import android.net.http.HttpResponseCache;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         }
         if(Utility.getLayoutCol(this)==3){
             if (findViewById(R.id.fragment3) != null) {
+                if(savedInstanceState!=null) return;
                 DetailsFragmentLand secondFragment = new DetailsFragmentLand();
                 secondFragment.setArguments(getIntent().getExtras());
                 getSupportFragmentManager().beginTransaction()
@@ -69,6 +71,11 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment3, firstFragment).commit();
         }}
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
     }
 
     @Override

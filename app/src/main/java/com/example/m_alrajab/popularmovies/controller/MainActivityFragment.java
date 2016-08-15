@@ -52,7 +52,7 @@ public class MainActivityFragment extends Fragment implements SwipeRefreshLayout
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState); setRetainInstance(false);
+        super.onCreate(savedInstanceState); //setRetainInstance(false);
         prefs = PreferenceManager.getDefaultSharedPreferences(this.getContext());
         prefs.registerOnSharedPreferenceChangeListener(this);
         prefUrlBuilder =new PrefUrlBuilder(getActivity());

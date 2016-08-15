@@ -78,6 +78,7 @@ public class DetailsFragmentLand extends Fragment implements LoaderManager.Loade
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         urlPosterApi=getActivity().getString(R.string.poster_base_url)+"/w500";
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this.getContext());
         editor = sharedPref.edit();
@@ -118,22 +119,22 @@ public class DetailsFragmentLand extends Fragment implements LoaderManager.Loade
                     , RefVal.projectionsMovieDetails,null,null, null);
         }
 
-//        //Obtain from ContentProvider the trailers info of this movie in trailersCursor
-//        final Cursor trailersCursor=getActivity().getContentResolver().query(
-//                MovieItemTrailerEntry.CONTENT_URI.buildUpon().appendEncodedPath(String.valueOf(_id)
-//                        +"/videos").build(), null,MovieItemTrailerEntry.COLUMN_TRAILER_OF_MOVIE_KEY
-//                        + " = ? ",new String[]{String.valueOf(_id)}, null);
-//
-//        //Obtain from ContentProvider the review info of this movie in reviewCursor
-//        final Cursor reviewCursor=getActivity().getContentResolver().query(
-//                MovieItemReviewEntry.CONTENT_URI.buildUpon().appendEncodedPath(String.valueOf(_id)
-//                        +"/reviews").build(), null,MovieItemReviewEntry.COLUMN_REVIEW_OF_MOVIE_KEY
-//                        + " = ? ",new String[]{String.valueOf(_id)}, null);
+        //Obtain from ContentProvider the trailers info of this movie in trailersCursor
+        final Cursor trailersCursor=getActivity().getContentResolver().query(
+                MovieItemTrailerEntry.CONTENT_URI.buildUpon().appendEncodedPath(String.valueOf(_id)
+                        +"/videos").build(), null,MovieItemTrailerEntry.COLUMN_TRAILER_OF_MOVIE_KEY
+                        + " = ? ",new String[]{String.valueOf(_id)}, null);
+
+        //Obtain from ContentProvider the review info of this movie in reviewCursor
+        final Cursor reviewCursor=getActivity().getContentResolver().query(
+                MovieItemReviewEntry.CONTENT_URI.buildUpon().appendEncodedPath(String.valueOf(_id)
+                        +"/reviews").build(), null,MovieItemReviewEntry.COLUMN_REVIEW_OF_MOVIE_KEY
+                        + " = ? ",new String[]{String.valueOf(_id)}, null);
 
 
-        pupolateMovieDetails      (detailsCursor  ,   view);
-          //  if  (detailsCursor  != null)
-          //  if  (trailersCursor != null)      pupolateMovieTrailers     (trailersCursor ,   view);
+
+            if  (detailsCursor  != null)      pupolateMovieDetails      (detailsCursor  ,   view);
+            if  (trailersCursor != null)      pupolateMovieTrailers     (trailersCursor ,   view);
            // if  (reviewCursor   != null)      pupolateMovieReviewGlimpse(reviewCursor   ,   view);
         /*} else {
            mReviewAdapter = new ReviewAdapter(getActivity(),  null,0);
