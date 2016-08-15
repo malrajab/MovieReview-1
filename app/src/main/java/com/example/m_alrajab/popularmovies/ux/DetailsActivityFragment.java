@@ -1,11 +1,13 @@
 package com.example.m_alrajab.popularmovies.ux;
 
+import android.annotation.TargetApi;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -31,7 +33,6 @@ import android.widget.ToggleButton;
 import com.example.m_alrajab.popularmovies.BuildConfig;
 import com.example.m_alrajab.popularmovies.R;
 import com.example.m_alrajab.popularmovies.model_data.ReviewAdapter;
-import com.example.m_alrajab.popularmovies.model_data.data.PopMovieContract;
 import com.example.m_alrajab.popularmovies.model_data.data.PopMovieContract.MovieItemEntry;
 import com.example.m_alrajab.popularmovies.model_data.data.PopMovieContract.MovieItemReviewEntry;
 import com.example.m_alrajab.popularmovies.model_data.data.PopMovieContract.MovieItemTrailerEntry;
@@ -75,7 +76,7 @@ public class DetailsActivityFragment extends Fragment implements LoaderManager.L
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this.getContext());
         editor = sharedPref.edit();
         Bundle arguments = getArguments();
-        if (arguments.containsKey(ARG_TYPE))
+        if (arguments!=null&&arguments.containsKey(ARG_TYPE))
             layout_id=(arguments.getString(ARG_TYPE).equals("Details"))
                     ?R.layout.fragment_details:R.layout.fragment_details2;
     }
@@ -105,7 +106,7 @@ public class DetailsActivityFragment extends Fragment implements LoaderManager.L
                         sharedPref.getString(this.getContext().getString(R.string.pref_sorting_key),"top_rated")).build()
                 , RefVal.projectionsMovieDetails,MovieItemEntry.COLUMN_MOVIE_ID + " = ? ",
                 new String[]{String.valueOf(_id)}, null);
-        if(detailsCursor.moveToFirst()) {
+        if(detailsCursor!=null&&detailsCursor.moveToFirst()) {
             blackposterKey = detailsCursor.getString(RefVal.MI_COL_BACKDROPPATH);
             movieTitle = detailsCursor.getString(RefVal.MI_COL_TITL);}
 
@@ -208,6 +209,7 @@ public class DetailsActivityFragment extends Fragment implements LoaderManager.L
             rvwGlimpse.setTextColor(Color.GRAY);
         }
     }
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     private void pupolateMovieTrailers(Cursor cursor, View view){
         if( cursor.moveToFirst()){
             do{

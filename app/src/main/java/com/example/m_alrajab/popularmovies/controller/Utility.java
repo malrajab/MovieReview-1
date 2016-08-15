@@ -34,7 +34,7 @@ public class Utility {
                     &&   getNumOfFavMovies(sPref)==0) {
                 SharedPreferences.Editor editor = sPref.edit();
                 editor.putBoolean(context.getString(R.string.pref_checked_favorite_key), false);
-                editor.commit();
+                editor.apply();
                 new AlertDialog.Builder(context)
                         .setTitle(context.getString(R.string.no_fav_dialog_title))
                         .setIcon(android.R.drawable.ic_dialog_info)

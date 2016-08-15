@@ -112,7 +112,7 @@ public class DetailsFragmentLand extends Fragment {
                 , RefVal.projectionsMovieDetails,MovieItemEntry.COLUMN_MOVIE_ID + " = ? ",
                 new String[]{String.valueOf(_id)}, null);
        // Log.v("Cursor ..>", ""+ (detailsCursor.moveToFirst()));
-        if(!detailsCursor.moveToFirst()) {
+        if(detailsCursor!=null&&!detailsCursor.moveToFirst()) {
             detailsCursor= this.getContext().getContentResolver().query(
                     MovieItemEntry.CONTENT_URI.buildUpon().appendPath(
                             sharedPref.getString(this.getContext().getString(R.string.pref_sorting_key),"top_rated")).build()

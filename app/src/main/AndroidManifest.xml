@@ -45,7 +45,9 @@
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/syncadapter" />
         </service>
+<!--
         <receiver android:name=".controller.PopMoviesService$AlarmReceiver"/>
+-->
         <!--        <activity
                     android:name="com.google.android.youtube.api.StandalonePlayerActivity"
                     android:configChanges="keyboardHidden|orientation|screenSize"
