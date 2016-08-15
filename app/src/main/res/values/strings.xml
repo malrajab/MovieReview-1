@@ -94,7 +94,7 @@
     <string name="pref_checked_favorite_key">pref_checked_favorite_key</string>
     <string name="add_fav">Add fav</string>
     <string name="title_activity_main2">Main2Activity</string>
-    <string name="review_hint_label">Not available yet</string>
+    <string name="review_hint_label">No more review</string>
     <string name="trailer_description">Click here to play a trailer</string>
     <string name="desc_icon">supporting icon, user face</string>
     <string name="descp_posterimage">Movie poster image</string>
@@ -108,4 +108,10 @@
     <string name="list_movies_empty">Not available \\n Check your internet connection \\n Check the setting of this app.</string>
     <string name="sync_account_type">popularmovies.m_alrajab.example.com</string>
     <string name="content_authority">com.example.m_alrajab.popularmovies</string>
+    <string name="narked_fav">Marked favorite</string>
+    <string name="text_add_fav">Add to favorite</string>
+    <string name="tv_overview_caption">Overview:</string>
+    <string name="tv_date_caption">Date:</string>
+    <string name="tv_trailer_caption">Trailers:</string>
+    <string name="tv_review_caption">Reviews:</string>
 </resources>

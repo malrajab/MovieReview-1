@@ -1,31 +1,44 @@
-
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <ImageView
-        android:id="@+id/backdrop_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:alpha="1"
-        android:scaleType="centerCrop"
-        app:layout_collapseMode="parallax"
-        android:contentDescription="@string/descp_backposter"/>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/backdrop_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:alpha="1"
+            android:scaleType="centerCrop"
+            android:contentDescription="@string/descp_backposter"/>
+        <TextView
+            android:id="@+id/details_movie_title"
+            android:textSize="24sp"
+            android:layout_alignParentBottom="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/colorYellowForFavorite"
+            android:shadowColor="@color/cardview_dark_background"
+            android:shadowDx="-3"
+            android:shadowDy="-2"
+            android:shadowRadius="3"
+            android:padding="@dimen/activity_vertical_margin"/>
+    </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <ToggleButton
             android:layout_width="wrap_content"
-            android:textOn="Marked favorite"
-            android:textOff="Add to favorite"
+            android:textOn="@string/narked_fav"
+            android:textOff="@string/text_add_fav"
             android:layout_height="@dimen/ic_fav_btn_height"
             android:id="@+id/details_icon_favorite"
             android:layout_gravity="end|bottom"/>
-
         <RatingBar
             android:id="@+id/movie_ratingbar"
             android:numStars="5"
@@ -40,7 +53,7 @@
     </LinearLayout>
     <TextView
         style="@style/CustomCaptionTV"
-        android:text="Overview: " />
+        android:text="@string/tv_overview_caption" />
     <TextView
         style="@style/CustomDetailTV"
         android:id="@+id/details_overview" />
@@ -49,7 +62,7 @@
         android:layout_height="wrap_content" />
     <TextView
         style="@style/CustomCaptionTV"
-        android:text="Date: " />
+        android:text="@string/tv_date_caption" />
     <TextView
         style="@style/CustomDetailTV"
         android:id="@+id/details_date" />
@@ -66,7 +79,7 @@
         android:background="?android:attr/listDivider" />
     <TextView
         style="@style/CustomCaptionTV"
-        android:text="Trailers:"/>
+        android:text="@string/tv_trailer_caption"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -85,11 +98,18 @@
         android:background="?android:attr/listDivider" />
     <TextView
         style="@style/CustomCaptionTV"
-        android:text="Reviews:"/>
+        android:text="@string/tv_review_caption"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="?android:attr/listDivider" />
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:id="@+id/review_container"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    </LinearLayout>
     <Button
         android:typeface="normal"
         android:gravity="top"
@@ -100,6 +120,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:drawableLeft="@drawable/ic_feedback_black_48dp" />
+        android:drawableLeft="@drawable/ic_face_black_48dp" />
 </LinearLayout>
+    <!--</android.support.v4.widget.NestedScrollView>-->
 

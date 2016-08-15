@@ -47,7 +47,7 @@ import static com.example.m_alrajab.popularmovies.ux.DetailsActivityFragment.ARG
 /**
  * A placeholder fragment containing a simple view.
  */
-public class DetailsFragmentLand extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class DetailsFragmentLand extends Fragment {
     private  String urlPosterApi;
     public static final String ARG_COUNT = "ARG_COUNT";
     public static final String ARG_KEY = "ARG_KEY";
@@ -59,10 +59,12 @@ public class DetailsFragmentLand extends Fragment implements LoaderManager.Loade
     private ListView mLV_Review;
     private ToggleButton toggleButton;
     private TextView mTV_Details;
+    private TextView mTV_Title;
     private TextView mTV_Date;
     private RatingBar ratingBar;
     private ViewPager viewPager;
     private LinearLayout mTlrCntnr;
+    private LinearLayout mRvwCntnr;
     private Button rvwGlimpse;
     private SharedPreferences sharedPref;
     private int _id, favSize;
@@ -100,8 +102,10 @@ public class DetailsFragmentLand extends Fragment implements LoaderManager.Loade
         toggleButton = (ToggleButton)   view.findViewById(R.id.details_icon_favorite);
         mTV_Details  = (TextView)       view.findViewById(R.id.details_overview);
         mTV_Date     = (TextView)       view.findViewById(R.id.details_date);
+        mTV_Title    = (TextView)       view.findViewById(R.id.details_movie_title);
         ratingBar    = (RatingBar)      view.findViewById(R.id.movie_ratingbar);
         mTlrCntnr    = (LinearLayout)   view.findViewById(R.id.trailer_container);
+        mRvwCntnr    = (LinearLayout)   view.findViewById(R.id.review_container);
         rvwGlimpse   = (Button)         view.findViewById(R.id.review_hint);
         blockbuster  = (ImageView)      view.findViewById(R.id.backdrop_container);
 
@@ -131,15 +135,10 @@ public class DetailsFragmentLand extends Fragment implements LoaderManager.Loade
                         +"/reviews").build(), null,MovieItemReviewEntry.COLUMN_REVIEW_OF_MOVIE_KEY
                         + " = ? ",new String[]{String.valueOf(_id)}, null);
 
-
-
             if  (detailsCursor  != null)      pupolateMovieDetails      (detailsCursor  ,   view);
             if  (trailersCursor != null)      pupolateMovieTrailers     (trailersCursor ,   view);
-           // if  (reviewCursor   != null)      pupolateMovieReviewGlimpse(reviewCursor   ,   view);
-        /*} else {
-           mReviewAdapter = new ReviewAdapter(getActivity(),  null,0);
-            mLV_Review.setAdapter(mReviewAdapter);
-        }*/
+            if  (reviewCursor   != null)      pupolateMovieReviewGlimpse(reviewCursor   ,   view);
+
         return view;
     }
 
@@ -161,13 +160,11 @@ public class DetailsFragmentLand extends Fragment implements LoaderManager.Loade
     @Override
     public void onResume() {
         super.onResume();
-//        editor.commit();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-           // getLoaderManager().initLoader(LOADER_ID, null, this);
     }
 
     @Override
@@ -178,23 +175,14 @@ public class DetailsFragmentLand extends Fragment implements LoaderManager.Loade
     private void pupolateMovieDetails(Cursor detailsCursor, View view){
 
         if(detailsCursor.moveToFirst()) {
-//            Picasso.with(view.getContext()).load(urlPosterApi + detailsCursor.getString(RefVal.MI_COL_POSTERPATH))
-//                    .into((ImageView) view.findViewById(R.id.details_poster));
+
             mTV_Details.setText(detailsCursor.getString(RefVal.MI_COL_OVERVIEW));
             mTV_Date.setText(detailsCursor.getString(RefVal.MI_COL_RELEASE));
             ratingBar.setRating(detailsCursor.getFloat(RefVal.MI_COL_RATING) / 2.0f);
-            movieTitle = detailsCursor.getString(RefVal.MI_COL_TITL);
+            //mTV_Title.setText(detailsCursor.getString(RefVal.MI_COL_TITL));
             Picasso.with(getContext()).load(urlPosterApi+ detailsCursor.getString(RefVal.MI_COL_BACKDROPPATH))
                     .into(blockbuster);
 
- /*           ;
-            if(!tmpBtn.getText().equals(getActivity().getString(R.string.review_hint_label)))
-                getActivity().findViewById(R.id.review_hint).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
-                    }});
-*/
             if (sharedPref.getBoolean(String.valueOf("FAV_" + _id), false)) {
                 toggleButton.setChecked(true);
                 toggleButton.setBackgroundColor(Color.GREEN);
@@ -224,15 +212,30 @@ public class DetailsFragmentLand extends Fragment implements LoaderManager.Loade
         }
     }
     private void pupolateMovieReviewGlimpse(Cursor cursor, View view){
+        int colr, i=0;
+
         if( cursor.moveToFirst()){
-            rvwGlimpse.setText("");
-            String str=cursor.getString(RefVal.COL_MOV_RE_CONTENT);
-            for(int i=0;i<200 && i<str.length();i++)
-                rvwGlimpse.append(str.charAt(i)!='\n'?String.valueOf(str.charAt(i)):"");
-            rvwGlimpse.append("..... click here to read more  ");
-        }else{
-            rvwGlimpse.setTextColor(Color.GRAY);
+            do{ colr=(i%2)*25+220;
+                Button reviewAuthor=new Button(getContext());
+                reviewAuthor.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+                reviewAuthor.setBackgroundColor(Color.argb(255,colr,colr,colr));
+                reviewAuthor.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                reviewAuthor.setCompoundDrawablesWithIntrinsicBounds(view.getResources()
+                        .getDrawable(R.drawable.ic_face_black_48dp), null,null,null);
+                reviewAuthor.setText(cursor.getString(RefVal.COL_MOV_RE_AUTHOR));
+                //i++;colr=(i%2)*25+220;
+                TextView reviewContent=new TextView(getContext());
+                reviewContent.setBackgroundColor(Color.argb(255,colr,colr,colr));
+                reviewContent.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                reviewContent.setText(cursor.getString(RefVal.COL_MOV_RE_CONTENT));
+                reviewContent.setPadding(16,16,16,16);
+                mRvwCntnr.addView(reviewAuthor);
+                mRvwCntnr.addView(reviewContent);i++;
+            }while(cursor.moveToNext());
         }
+
     }
     private void pupolateMovieTrailers(Cursor cursor, View view){
         if( cursor.moveToFirst()){
@@ -282,24 +285,6 @@ public class DetailsFragmentLand extends Fragment implements LoaderManager.Loade
      * @return
      *
      */
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return (i != LOADER_ID)?null: new CursorLoader(getActivity(),MovieItemReviewEntry.CONTENT_URI.
-                buildUpon().appendEncodedPath(String.valueOf(_id)+"/reviews")
-                .build(), null, COLUMN_REVIEW_OF_MOVIE_KEY+ " = ? ",
-                new String[]{String.valueOf(_id)}, null);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        mReviewAdapter.swapCursor(cursor);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-        mReviewAdapter.swapCursor(null);
-    }
 
 
     public static class RefVal{
